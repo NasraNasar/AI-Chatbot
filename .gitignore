@@ -1,0 +1,18 @@
+# Secret API keys
+.env
+.streamlit/secrets.toml
+
+# Python environment
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Local chat database
+chatbot.db
+chatbot.db-journal
+chatbot.db-shm
+chatbot.db-wal
+
+# VS Code
+.vscode/
