@@ -137,9 +137,36 @@ current_user_id = st.session_state.user["id"]
 # GEMINI AND FILE PROCESSING
 # ==================================================
 
+# First, try reading values from the local .env file
 api_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key) if api_key else None
-model_name = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
+model_name = os.getenv("GEMINI_MODEL")
+
+# If not available locally, try Streamlit Cloud Secrets
+if not api_key:
+    try:
+        api_key = st.secrets["GEMINI_API_KEY"]
+    except (KeyError, FileNotFoundError):
+        api_key = None
+
+if not model_name:
+    try:
+        model_name = st.secrets.get(
+            "GEMINI_MODEL",
+            "gemini-3.1-flash-lite",
+        )
+    except FileNotFoundError:
+        model_name = "gemini-3.1-flash-lite"
+
+# Stop the application if no API key was provided
+if not api_key:
+    st.error(
+        "Gemini API key is missing. Add it to your .env file "
+        "or Streamlit Cloud Secrets."
+    )
+    st.stop()
+
+# Create the Gemini client
+client = genai.Client(api_key=api_key)
 
 
 def extract_pdf_text(data):
