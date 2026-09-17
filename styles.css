@@ -12,8 +12,8 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
   border-right: 1px solid rgba(255,255,255,.05);
 }
 [data-testid="stSidebar"] > div:first-child {
-  display: flex; flex-direction: column; box-sizing: border-box;
-  min-height: 100%; padding: 0 .8rem 1rem;
+  position: relative; display: flex; flex-direction: column; box-sizing: border-box;
+  height: 100vh; min-height: 0; overflow: hidden; padding: 0 .8rem 6.5rem;
 }
 [data-testid="stSidebar"] [data-testid="stSidebarContent"],
 [data-testid="stSidebar"] > div:first-child > div:first-child {
@@ -27,7 +27,7 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
 }
 [data-testid="stSidebar"] hr { border-color: rgba(255,255,255,.08); }
 [data-testid="stSidebar"] .stCaption,
-[data-testid="stSidebar"] .stCaption p { color: #aab1c7 !important; }
+[data-testid="stSidebar"] .stCaption p { color: #d2d9eb !important; }
 [data-testid="stSidebar"] .stButton > button {
   min-height: 40px; height: auto; padding: .5rem .7rem;
   border-radius: 11px; text-align: left; line-height: 1.25;
@@ -104,12 +104,34 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
   color: #9ca5c0 !important; opacity: 1;
 }
 [data-testid="stSidebar"] .st-key-conversation-history {
-  max-height: min(46vh, 390px);
-  overflow-y: auto;
-  overflow-x: hidden;
+  flex: 0 0 clamp(150px, calc(100vh - 390px), 390px);
+  height: clamp(150px, calc(100vh - 390px), 390px);
+  max-height: none;
+  min-height: 0;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
   padding-right: .25rem;
+  display: block;
+  align-content: start;
+  overscroll-behavior: contain;
   scrollbar-color: #394276 transparent;
   scrollbar-width: thin;
+}
+[data-testid="stSidebar"] .st-key-conversation-history > div {
+  display: block !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+[data-testid="stSidebar"] .st-key-conversation-history .conversations-label {
+  display: block;
+  position: relative;
+  z-index: 1;
+  min-height: 1rem;
+  margin: 12px 0 14px 5px !important;
+  padding-top: 3px;
+}
+[data-testid="stSidebar"] .st-key-conversation-history [data-testid="stHorizontalBlock"] {
+  margin-top: .25rem;
 }
 [data-testid="stSidebar"] .st-key-conversation-history::-webkit-scrollbar {
   width: 5px;
@@ -119,13 +141,27 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
   border-radius: 10px;
 }
 [data-testid="stSidebar"] .st-key-sidebar-profile {
-  position: sticky;
+  position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 2;
-  margin: auto -.8rem -1rem;
-  padding: .8rem .8rem 1rem;
+  box-sizing: border-box;
+  margin: 0;
+  padding: .7rem .8rem calc(.8rem + env(safe-area-inset-bottom));
   background: linear-gradient(180deg, rgba(9,13,50,.78), #0b1038 28%);
   border-top: 1px solid rgba(255,255,255,.08);
+}
+[data-testid="stSidebar"] .st-key-sidebar-profile .stCaption {
+  margin: .15rem 0 .45rem;
+}
+[data-testid="stSidebar"] .st-key-sidebar-profile .stCaption p {
+  color: #d2d9eb !important;
+  font-size: .75rem;
+}
+[data-testid="stSidebar"] .st-key-sidebar-profile .stButton > button {
+  min-height: 34px;
+  padding: .4rem .65rem;
 }
 
 /* Chat */
